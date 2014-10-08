@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>no.antares</groupId>
+	<artifactId>tsk.adhoc</artifactId>
+	<name>tsk-adhoc</name>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<!-- url>https://bitbucket.org/2my/clu-json-xform/</url -->
+	<inceptionYear>2014</inceptionYear>
+	<description>
+		A bare-bones scala project for quick one-off stuff.
+	</description>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- <scm>
+		<connection>scm:git:https://2my@bitbucket.org/2my/clu-json-xform.git</connection>
+		<developerConnection>scm:git:https://2my@bitbucket.org/2my/clu-json-xform.git</developerConnection>
+		<url>https://bitbucket.org/2my/clu-json-xform</url>
+	</scm>
+	<issueManagement>
+		<system>BitBucket</system>
+		<url>https://bitbucket.org/2my/clu-json-xform/issues</url>
+	</issueManagement -->
+
+	<developers>
+		<developer>
+			<id>tsk</id>
+			<name>Tommy Skodje</name>
+			<email>tsk@antares.no</email>
+			<organization>Antares Gruppen AS (http://www.antares.no)</organization>
+			<roles>
+				<role>Owner</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.scala-tools</groupId>
+				<artifactId>maven-scala-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>scala-test-compile-first</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+					<configuration>
+							<includes>
+									<include>**/*Test.class</include>
+									<include>**/*Spec.class</include>
+							</includes>
+					</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+    <dependencies>
+        <dependency>
+            <!-- http://www.scala-lang.org -->
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.play</groupId>
+            <artifactId>play-json_2.11</artifactId>
+            <version>2.4.0-M1</version>
+        </dependency>
+
+		<dependency>
+		    <!-- http://www.scalatest.org/ 
+			<groupId>org.scalatest</groupId>
+			<artifactId>scalatest_2.9.2</artifactId>
+			<version>1.8</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		-->
+		    <!-- http://www.junit.org/ -->
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- http://code.google.com/p/hamcrest/ -->
+		    <groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>1.2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <!-- http://code.google.com/p/mockito/ -->
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.5</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+</project>
