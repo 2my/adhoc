@@ -20,11 +20,7 @@ object HelloWorld {
 		"SE3" -> List("DK1", "FI", "NO1", "SE2", "SE4"),
 		"SE4" -> List("DE", "DK2", "PL", "SE3")
 	);
-	val template = """
-		<Row>
-			<Element Name="Entity1" Value="Area:From=FROM"/>
-			<Element Name="Entity2" Value="Area:To=TO"/>
-		</Row>""";
+	val template = """<Row> <Element Name="Entity1" Value="Area:From=FROM"/> <Element Name="Entity2" Value="Area:To=TO"/> </Row>""";
 
 	def fromTo( from: String, to: String )	= template.replace( "FROM", from ).replace( "TO", to );
 
