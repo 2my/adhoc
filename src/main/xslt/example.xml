@@ -1,0 +1,84 @@
+<TOP>
+  <DocumentIdentification v="Example"/>
+  <DocumentVersion v="2"/>
+  <Irrelevant v="A61"/>
+  <CreationDateTime v="2014-10-29T15:32:34.682+01:00"/>
+  <PublicationTimeInterval v="2014-11-02T23:00Z/2014-11-09T23:00Z"/>
+  <PublicationTimeSeries>
+    <TimeSeriesIdentification v="10YNO-2--------T->10YCB-NL-------V"/>
+    <Irrelevant v="A27"/>
+    <InArea v="10YCB-NL-------V" codingScheme="A01"/>
+    <OutArea v="10YNO-2--------T" codingScheme="A01"/>
+    <Period>
+      <TimeInterval v="2014-11-02T23:00Z/2014-11-09T23:00Z"/>
+      <Resolution v="PT60M"/>
+      <Interval>
+        <Pos v="1"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="25"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="49"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="73"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="97"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="121"/>
+        <Qty v="700"/>
+      </Interval>
+      <Interval>
+        <Pos v="145"/>
+        <Qty v="700"/>
+      </Interval>
+    </Period>
+  </PublicationTimeSeries>
+  <PublicationTimeSeries>
+    <TimeSeriesIdentification v="10YDK-1--------W->10Y1001A1001A46L"/>
+    <Irrelevant v="A27"/>
+    <InArea v="10Y1001A1001A46L" codingScheme="A01"/>
+    <OutArea v="10YDK-1--------W" codingScheme="A01"/>
+    <Period>
+      <TimeInterval v="2014-11-02T23:00Z/2014-11-09T23:00Z"/>
+      <Resolution v="PT60M"/>
+      <Interval>
+        <Pos v="1"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="25"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="49"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="73"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="97"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="121"/>
+        <Qty v="740"/>
+      </Interval>
+      <Interval>
+        <Pos v="145"/>
+        <Qty v="740"/>
+      </Interval>
+    </Period>
+  </PublicationTimeSeries>
+
+</TOP>
