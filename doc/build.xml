@@ -1,0 +1,100 @@
+<project name="build-Bankers-Doc" default="help" basedir="."
+ xmlns:if="ant:if"
+ xmlns:unless="ant:unless"
+>
+	<target name="help" description="Display how to get usage information" >
+		<!-- show targets -->
+		<exec executable="cmd.exe"><arg line="/c ant -p"/></exec>
+		<echo>
+  	</echo>
+	</target>
+
+
+	<!-- locations -->
+	<property name="site.source" value="." />
+	<property name="site.target" value="../target/site" />
+	<property name="library.jar" value="../target/install/tsk.adhoc.jar" />
+
+
+	<target name="clean" description="delete last built site" >
+		<delete dir="${site.target}" />
+	</target>
+
+	<target name="site" description="Build documentation site" >
+		<groovy>
+			def ant = new AntBuilder( project );
+			void convertWithPegDown( File source, File dest ) {
+				def pegDown	= new org.pegdown.PegDownProcessor( org.pegdown.Extensions.ALL );
+				def result	= pegDown.markdownToHtml( source.text )
+				dest.write( result )	// using https://github.com/sirthias/pegdown
+			}
+			void convertWithPanDoc( File source, File dest ) {
+				ant.convert_markdown( source: source, tofile: dest )
+			}
+			void recurse( File dir, File root ) {
+				def target	= properties.get( "site.target" );
+				def skiplist = [
+					// "bin",
+					"build.xml",
+					target
+				];
+				ant.echo "DIR " + dir + ": " + dir.listFiles().collect{ it.name }.join( ", " )
+				dir.listFiles().each { file ->
+					if ( skiplist.contains( file.getName() ) )
+						return;
+					def pathFromRoot	= file.absolutePath.substring( root.absolutePath.length() + 1 )
+					def dest	= new File( new File( target ), pathFromRoot )
+					if ( file.isDirectory() ) {
+						recurse( file, root )
+					} else if ( file.name.endsWith( ".uxf" ) ) {
+						ant.convert_umlet( source: file.canonicalPath, todir: dest.parent, name: dest.name.replace( ".uxf", "" ) )
+					} else {
+						ant.copy ( file: file, tofile: dest, overwrite: true, quiet: true )
+						if ( file.name.endsWith( ".md" ) ) {
+							convertWithPegDown( file, new File( dest.parentFile, dest.name + ".peg.html" ) )
+							// convertWithPanDoc( dest, dest )
+						}
+					}
+				}
+			}
+			def source	= properties.get( "site.source" );
+			def root	= new File( source );
+			recurse( root, root )
+		</groovy>
+	</target>
+
+	<!-- ****************************** internal definitions ****************************** -->
+
+	<macrodef name="convert_markdown" >
+		<attribute name="source" />
+		<attribute name="tofile" />
+		<attribute name="ext" default="html" />
+		<sequential>
+			<echo>pandoc -o @{tofile}.@{ext} --tab-stop=2 -f markdown+hard_line_breaks @{source}</echo>
+			<exec executable="cmd" >
+				<arg line="/c pandoc -o @{tofile}.@{ext} --tab-stop=2 -f markdown+hard_line_breaks @{source}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="convert_umlet" >
+		<attribute name="source" />
+		<attribute name="todir" />
+		<attribute name="name" />
+		<attribute name="ext" default="png" />
+		<sequential>
+			<echo>java -cp ${library.jar} com.baselet.control.Main -action=convert -format=@{ext} -filename=@{source} -output=@{name}</echo>
+			<java classpath="${library.jar}" classname="com.baselet.control.Main" >
+				<arg line="-action=convert -format=@{ext} -filename=@{source} -output=@{name}" />
+			</java>
+			<move file="@{name}.@{ext}" tofile="@{todir}/@{name}.@{ext}" quiet="true" />
+		</sequential>
+	</macrodef>
+
+	<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy">
+		<classpath>
+				<pathelement location="${library.jar}"/>
+		</classpath>
+	</taskdef>
+
+</project>
