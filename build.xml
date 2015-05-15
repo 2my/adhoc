@@ -1,0 +1,31 @@
+<project name="MyProject" default="database-dump" basedir=".">
+    <description>
+        simple example build file
+    </description>
+ <path id="runtime-classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+	</path>
+
+	<target name="database-dump" description="Dumps the database structure">
+		<taskdef name="databaseToDdl"
+						 classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+			<classpath refid="runtime-classpath"/>
+	
+		</taskdef>
+
+		<databaseToDdl modelName="MyModel">
+			<database url="jdbc:jtds:sybase://server:5000/DBMNAME"
+								driverClassName="net.sourceforge.jtds.jdbc.Driver"
+								username="some_user"
+								password="some_pwd"/>
+	
+			<writeSchemaToFile outputFile="db-schema.xml"/>
+			<writeDataToFile outputFile="data.xml"/>
+		</databaseToDdl>
+	
+	</target>
+
+</project>

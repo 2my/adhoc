@@ -1,0 +1,44 @@
+ant.path(id: 'ddl-task' ) {
+	fileset( dir: 'lib' ) {
+		include( name: '**/*.jar' )
+	}
+}
+
+task exportDb << {
+	//Load the custom tasks
+	ant.taskdef(name: 'databaseToDdl', classname: 'org.apache.ddlutils.task.DatabaseToDdlTask') {
+		classpath( refid: 'ddl-task' )
+	}
+
+	// Export DDL
+	ant.databaseToDdl( modelName: 'MyModel' ) {
+		database(
+				url: 'jdbc:jtds:sybase://server:5000/DBNAME'
+				, driverClassName: 'net.sourceforge.jtds.jdbc.Driver'
+				, username: 'some_user'
+				, password: 'some_password'
+		)
+		writeSchemaToFile(outputFile: 'db-schema.xml')
+	}
+}
+
+task importDb << {
+	ant.taskdef(name: 'ddlToDatabase', classname: 'org.apache.ddlutils.task.DdlToDatabaseTask') {
+		classpath( refid: 'ddl-task' )
+	}
+
+	// Import DDL
+	ant.ddlToDatabase() {
+		database(
+				url: 'jdbc:derby:derbyDB;create=true'
+				, driverClassName: 'org.apache.derby.jdbc.EmbeddedDriver'
+				, username: 'TEST'
+				, password: 'TEST'
+		)
+		fileset( dir: '.' ) {
+			include( name: 'db-schema.xml' )
+		}
+		createDatabase( failonerror: 'false' )
+		writeSchemaToDatabase()
+	}
+}
