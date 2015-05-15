@@ -30,11 +30,11 @@ Scale-plugin
 Integration testing with Surefire  
 Copy dependencies and resources  
 
-Assemblies:
+Assemblies:  
 	* jar-with-dependencies: s it can be run from ant
 	* zip: unzips to Unix with file modes etc
 
-Dependencies for:
+Dependencies for:  
 	* Scala
 	* Xml+Xlt
 	* Json (Jackson)
