@@ -8,7 +8,7 @@ A place to put interesting snippets
 I installed scala, and ran the repl  
 Try: typesafe-activator  
 
-http://www.scala-lang.org
+http://www.scala-lang.org  
 http://brenocon.com/scalacheat/
 
 
@@ -19,7 +19,7 @@ GoldenTest with use of Hamcrest and Mockito
 
 ## Documentation
 -------------------------
-build documentation with ant (using umlet and pegdown converters)
+build documentation with ant (using umlet and pegdown converters).  
 shows also how to do Groovy in Ant
 
 
@@ -30,11 +30,13 @@ Scale-plugin
 Integration testing with Surefire  
 Copy dependencies and resources  
 
-Assemblies:  
+Assemblies:
+
 	* jar-with-dependencies: s it can be run from ant
 	* zip: unzips to Unix with file modes etc
 
-Dependencies for:  
+Dependencies for:
+
 	* Scala
 	* Xml+Xlt
 	* Json (Jackson)
