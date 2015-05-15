@@ -25,13 +25,15 @@ shows also how to do Groovy in Ant
 
 ## Maven
 -----------------------
-Open-source project configuration
-Scale-plugin
-Integration testing with Surefire
-Assemblies
+Open-source project configuration  
+Scale-plugin  
+Integration testing with Surefire  
+Copy dependencies and resources  
+
+Assemblies:
 	* jar-with-dependencies: s it can be run from ant
 	* zip: unzips to Unix with file modes etc
-Copy dependencies and resources
+
 Dependencies for:
 	* Scala
 	* Xml+Xlt
