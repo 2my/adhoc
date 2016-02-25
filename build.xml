@@ -1,19 +1,67 @@
 <project name="MyProject" default="database-dump" basedir=".">
-    <description>
-        simple example build file
-    </description>
- <path id="runtime-classpath">
+	<description>
+			simple build file with examples:
+			*	groovy
+			*	database-dump
+			* gz + rename / move
+	</description>
+
+	<path id="runtime-classpath">
 		<fileset dir="lib">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
 	</path>
+	<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy" >
+			<classpath refid="runtime-classpath"/>
+	</taskdef>
 
+	<!-- groovy -->
+	<target name="rm-duplicates">
+			<groovy>
+				def ant = new AntBuilder( project )
+
+				"@{dirs}".split( "," ).each{
+					def dir	= it.trim();
+					if ( ! dir.equals( "" ) ) {
+						ant.svn( dir: dir );
+					}
+				}
+			def id2fileMap = [:]
+			new File('.').eachFileRecurse(groovy.io.FileType.FILES) {
+				if(it.name.endsWith('.xml') &amp;&amp; it.name.startsWith('queue.Sesam') ) {
+					def envelope = new XmlSlurper().parseText(it.text)
+					def msgId = envelope.Header.MessageHeader.MessageData.MessageId.text()
+					if ( id2fileMap.containsKey( msgId ) ) {
+						ant.echo( it.name + " deleted: " + msgId )
+						it.delete()
+					} else {
+						id2fileMap[msgId] = it
+						ant.echo( it.name + " retained: " + msgId )
+					}
+				}
+			}
+			</groovy>
+	</target>
+	<macrodef name="svn" >
+		<attribute name="dir" />
+		<sequential >
+			<echo message="@{dir}: svn status" if:true="${svn.status}" />
+			<exec executable="svn" dir="${root}/@{dir}" logError="true" failonerror="true" if:true="${svn.status}" >
+				<arg value="status"/>
+			</exec>
+			<echo message="@{dir}: svn update" if:true="${svn.update}" />
+			<exec executable="svn" dir="${root}/@{dir}" output="last.build.out.txt" logError="true" failonerror="true" if:true="${svn.update}" >
+				<arg value="up"/>
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<!-- database-dump -->
 	<target name="database-dump" description="Dumps the database structure">
 		<taskdef name="databaseToDdl"
 						 classname="org.apache.ddlutils.task.DatabaseToDdlTask">
 			<classpath refid="runtime-classpath"/>
-	
 		</taskdef>
 
 		<databaseToDdl modelName="MyModel">
@@ -25,7 +73,31 @@
 			<writeSchemaToFile outputFile="db-schema.xml"/>
 			<writeDataToFile outputFile="data.xml"/>
 		</databaseToDdl>
-	
 	</target>
+
+	<!-- gz + rename / move -->
+	<target name="gz">
+		<!-- in DOS:
+			dir *.gz | clip
+			find: .*queue(.*).xml.gz
+			replace: <process file="queue$1.xml" />
+		-->
+		<process file="queue.ElbankElbasStatisticalData_060001541.xml" />
+	</target>
+	<macrodef name="process" >
+		<attribute name="file" />
+		<sequential>
+			<gunzip src="@{file}.gz" />
+			<delete file="@{file}.gz" />
+			<!--
+			<move toDir=".">
+				<fileset dir=".">
+					<include name="@{file}"/>
+				</fileset>
+				<mapper type="regexp" from="^queue\.ElbankSesam(\w*)Done_(.*)$$" to="queue.Sesam.\1_\2"/>
+			</move>
+			-->
+		</sequential>
+	</macrodef>
 
 </project>
